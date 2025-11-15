@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://pmirandaarias.github.io/the-versus-game",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -30,6 +31,5 @@
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.1",
     "vite": "^7.2.2"
-  },
-  "homepage": "https://pmirandaarias.github.io/the-versus-game"
+  }
 }

@@ -42,16 +42,16 @@ const THEMES_DATA = {
     singular: 'comida',
     gender: 'a',
     items: [
-      'Pizza', 'Sushi', 'Tacos', 'Hamburguesa', 'Pasta Carbonara',
-      'Paella', 'Pad Thai', 'Ramen', 'Pho', 'Curry Indio',
-      'Asado Argentino', 'Ceviche', 'Empanadas', 'Fish and Chips', 'Croissant',
+      'Pizza', 'Sushi', 'Tacos', 'Hamburguesa',
+      'Paella', 'Pad Thai', 'Ramen', 'Curry Indio',
+      'Asado de vacuno', 'Ceviche', 'Empanada de Pino', 'Croissant Dulce',
       'Falafel', 'Kebab', 'Lasaña', 'Risotto', 'Gyoza',
-      'Dim Sum', 'Peking Duck', 'Biryani', 'Shawarma', 'Moussaka',
-      'Borscht', 'Goulash', 'Pierogi', 'Schnitzel', 'Bratwurst',
-      'Churros', 'Tiramisú', 'Baklava', 'Bibimbap', 'Kimchi',
-      'Poutine', 'Nachos', 'Quesadilla', 'Burrito', 'Enchiladas',
-      'Sashimi', 'Tempura', 'Udon', 'Bulgogi', 'Tom Yum',
-      'Satay', 'Rendang', 'Nasi Goreng', 'Laksa', 'Pho'
+      'Porotos con rienda', 'Asado de cordeno', 'Biryani', 'Shawarma', 'Completos',
+      'Pastel de Choclo', 'Empanada Frita de Queso', 'Empanada Frita de Mariscos', 'Pescado Frito', 'Cazuela de Ave',
+      'Cazuela de Vacuno', 'Fideos con Salsa de Tomate', 'Bistec con Arroz', 'Bistec con Papas Fritas', 'Pollo Arvejado',
+      'Puré con Vienesas', 'Bistec a lo Pobre', 'Barros Jarpa', 'Choripán', 'Sopaipillas',
+      'Sashimi', 'Tempura', 'Aji de gallina', 'Pan con Manjar', 'Pan con Palta',
+      'Gnoccis', 'Ravioles', 'Pan con mortadela', 'Lasaña', 'Churros'
     ]
   },
   series: {
@@ -134,14 +134,14 @@ const VersusGame = () => {
   const selectTimer = (selectedTimer) => {
     setTimer(selectedTimer);
     if (mode === 'pyramid') {
-      initPyramid();
+      initPyramid(selectedTimer);
     } else {
-      initOneVsOne();
+      initOneVsOne(selectedTimer);
     }
     setScreen('game');
   };
 
-  const initOneVsOne = () => {
+  const initOneVsOne = (timerValue) => {
     setCurrentRound(0);
     setUsedItems([]);
     const item1 = selectedItems[Math.floor(Math.random() * selectedItems.length)];
@@ -149,12 +149,12 @@ const VersusGame = () => {
     const item2 = available[Math.floor(Math.random() * available.length)];
     setCurrentOption1(item1);
     setCurrentOption2(item2);
-    if (timer !== 'NO') {
-      setCountdown(parseInt(timer));
+    if (timerValue !== 'NO') {
+      setCountdown(parseInt(timerValue));
     }
   };
 
-  const initPyramid = () => {
+  const initPyramid = (timerValue) => {
     const shuffled = [...selectedItems].sort(() => Math.random() - 0.5);
     const newBracket = {
       round16: shuffled.map((item, i) => ({ id: i, name: item, winner: null })),
@@ -167,8 +167,8 @@ const VersusGame = () => {
     setBracketProgress(0);
     setCurrentOption1(shuffled[0]);
     setCurrentOption2(shuffled[1]);
-    if (timer !== 'NO') {
-      setCountdown(parseInt(timer));
+    if (timerValue !== 'NO') {
+      setCountdown(parseInt(timerValue));
     }
   };
 
@@ -218,9 +218,7 @@ const VersusGame = () => {
 
     if (bracketProgress < 8) {
       // Octavos de final
-      if (!newBracket.round8[matchIndex]) {
-        newBracket.round8[matchIndex] = { name: option, winner: null };
-      }
+      newBracket.round8.push({ name: option, winner: null });
 
       if (bracketProgress < 7) {
         const nextMatch = bracketProgress + 1;
@@ -235,13 +233,10 @@ const VersusGame = () => {
       }
     } else if (bracketProgress < 12) {
       // Cuartos de final
-      const quarterIndex = bracketProgress - 8;
-      if (!newBracket.round4[quarterIndex]) {
-        newBracket.round4[quarterIndex] = { name: option, winner: null };
-      }
+      newBracket.round4.push({ name: option, winner: null });
 
       if (bracketProgress < 11) {
-        const nextQuarter = quarterIndex + 1;
+        const nextQuarter = newBracket.round4.length;
         setCurrentOption1(newBracket.round8[nextQuarter * 2].name);
         setCurrentOption2(newBracket.round8[nextQuarter * 2 + 1].name);
         setBracketProgress(bracketProgress + 1);
@@ -253,10 +248,7 @@ const VersusGame = () => {
       }
     } else if (bracketProgress < 14) {
       // Semifinales
-      const semiIndex = bracketProgress - 12;
-      if (!newBracket.round2[semiIndex]) {
-        newBracket.round2[semiIndex] = { name: option, winner: null };
-      }
+      newBracket.round2.push({ name: option, winner: null });
 
       if (bracketProgress < 13) {
         setCurrentOption1(newBracket.round4[2].name);
@@ -274,6 +266,8 @@ const VersusGame = () => {
       setWinner(option);
       setScreen('result');
       updateURL(option);
+      setBracket(newBracket);
+      return;
     }
 
     setBracket(newBracket);
@@ -354,6 +348,12 @@ const VersusGame = () => {
 
           <div className="bg-purple-800 rounded-lg p-6 mb-8 text-lg leading-relaxed">
             <h2 className="text-2xl font-bold mb-4 text-yellow-400">¿Cómo jugar?</h2>
+            <p className="mb-4">
+              <strong>The Versus Game</strong> es un juego donde debes elegir entre dos opciones en cada ronda hasta determinar tu favorito absoluto.
+            </p>
+            <p className="mb-4">
+              <strong>Pasos:</strong>
+            </p>
             <ol className="list-decimal list-inside space-y-2 mb-4">
               <li>Elige un <strong>tema</strong> (NBA, Fútbol, Comidas, Series)</li>
               <li>Selecciona una <strong>modalidad</strong>:
@@ -365,6 +365,9 @@ const VersusGame = () => {
               <li>Decide si quieres <strong>tiempo límite</strong> (NO, 5 seg, 10 seg)</li>
               <li>¡Comienza a elegir y descubre tu favorito!</li>
             </ol>
+            <p className="text-sm text-yellow-300">
+              Tip: Puedes compartir tu resultado con amigos al finalizar.
+            </p>
           </div>
 
           <button
@@ -464,41 +467,85 @@ const VersusGame = () => {
 
   // GAME SCREEN
   if (screen === 'game') {
-    return (
-      <div className="min-h-screen bg-purple-900 text-white p-6 flex flex-col">
-        <div className="max-w-4xl mx-auto w-full flex-1 flex flex-col">
-          <div className="text-center mb-6">
-            <div className="text-yellow-400 text-lg mb-2">
-              {mode === '1v1' ? `Ronda ${currentRound + 1} de 10` : getRoundName()}
+    // Para 1v1: layout normal sin fixed
+    if (mode === '1v1') {
+      return (
+        <div className="min-h-screen bg-purple-900 text-white p-4 md:p-6 flex flex-col">
+          <div className="max-w-4xl mx-auto w-full flex-1 flex flex-col justify-center">
+            <div className="text-center mb-8">
+              <div className="text-yellow-400 text-xl md:text-2xl mb-4 font-semibold">
+                Ronda {currentRound + 1} de 10
+              </div>
+              {timer !== 'NO' && countdown !== null && (
+                <div className="text-8xl md:text-9xl font-bold text-yellow-400 animate-pulse mb-8">
+                  {countdown}
+                </div>
+              )}
             </div>
-            {timer !== 'NO' && countdown !== null && (
-              <div className="text-6xl font-bold text-yellow-400 animate-pulse">
-                {countdown}
+
+            <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
+              <button
+                onClick={() => selectOption(currentOption1)}
+                className="w-full md:w-5/12 bg-purple-700 hover:bg-purple-600 p-8 md:p-10 rounded-lg text-2xl md:text-3xl font-bold transition-all transform hover:scale-105 shadow-lg"
+              >
+                {currentOption1}
+              </button>
+
+              <div className="text-4xl md:text-5xl font-bold text-yellow-400">VS</div>
+
+              <button
+                onClick={() => selectOption(currentOption2)}
+                className="w-full md:w-5/12 bg-purple-700 hover:bg-purple-600 p-8 md:p-10 rounded-lg text-2xl md:text-3xl font-bold transition-all transform hover:scale-105 shadow-lg"
+              >
+                {currentOption2}
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Para pyramid: layout con bracket y botones fixed
+    return (
+      <div className="min-h-screen bg-purple-900 text-white flex flex-col">
+        <div className="flex-1 overflow-y-auto pb-48 md:pb-40">
+          <div className="max-w-6xl mx-auto w-full p-4">
+            <div className="text-center mb-4">
+              <div className="text-yellow-400 text-xl md:text-2xl mb-2 font-semibold">
+                {getRoundName()}
+              </div>
+              {timer !== 'NO' && countdown !== null && (
+                <div className="text-7xl md:text-8xl font-bold text-yellow-400 animate-pulse">
+                  {countdown}
+                </div>
+              )}
+            </div>
+
+            {bracket && (
+              <div className="overflow-x-auto">
+                <div className="bg-purple-800 rounded-lg p-2 md:p-4 min-w-max">
+                  <BracketDisplay bracket={bracket} progress={bracketProgress} />
+                </div>
               </div>
             )}
           </div>
+        </div>
 
-          {mode === 'pyramid' && bracket && (
-            <div className="mb-6 overflow-x-auto">
-              <div className="bg-purple-800 rounded-lg p-4 min-w-max">
-                <BracketDisplay bracket={bracket} progress={bracketProgress} />
-              </div>
-            </div>
-          )}
-
-          <div className="flex-1 flex flex-col md:flex-row gap-4 items-center justify-center">
+        {/* Botones fijos al bottom solo para pyramid */}
+        <div className="fixed bottom-0 left-0 right-0 bg-purple-900 border-t-2 border-purple-700 p-4 shadow-2xl">
+          <div className="max-w-4xl mx-auto flex gap-3 items-center">
             <button
               onClick={() => selectOption(currentOption1)}
-              className="w-full md:w-1/2 bg-purple-700 hover:bg-purple-600 p-8 rounded-lg text-2xl md:text-3xl font-bold transition-all transform hover:scale-105"
+              className="flex-1 bg-purple-700 hover:bg-purple-600 p-4 md:p-6 rounded-lg text-lg md:text-2xl font-bold transition-all transform hover:scale-105 shadow-lg"
             >
               {currentOption1}
             </button>
 
-            <div className="text-4xl font-bold text-yellow-400">VS</div>
+            <div className="text-2xl md:text-3xl font-bold text-yellow-400 px-2">VS</div>
 
             <button
               onClick={() => selectOption(currentOption2)}
-              className="w-full md:w-1/2 bg-purple-700 hover:bg-purple-600 p-8 rounded-lg text-2xl md:text-3xl font-bold transition-all transform hover:scale-105"
+              className="flex-1 bg-purple-700 hover:bg-purple-600 p-4 md:p-6 rounded-lg text-lg md:text-2xl font-bold transition-all transform hover:scale-105 shadow-lg"
             >
               {currentOption2}
             </button>
@@ -573,47 +620,162 @@ const VersusGame = () => {
   }
 
   function BracketDisplay({ bracket, progress }) {
+    const getCurrentMatch = () => {
+      if (progress < 8) {
+        return { round: 'round16', match: progress };
+      } else if (progress < 12) {
+        return { round: 'round8', match: progress - 8 };
+      } else if (progress < 14) {
+        return { round: 'round4', match: progress - 12 };
+      } else if (progress === 14) {
+        return { round: 'round2', match: 0 };
+      }
+      return null;
+    };
+
+    const currentMatch = getCurrentMatch();
+
+    const isCurrentMatch = (round, matchIndex) => {
+      if (!currentMatch) return false;
+      return currentMatch.round === round && currentMatch.match === matchIndex;
+    };
+
+    const getMatchBoxClass = (isCurrent) => {
+      const baseClass = "p-1.5 md:p-2 rounded border-2 transition-all text-xs";
+      if (isCurrent) {
+        return `${baseClass} border-yellow-400 bg-yellow-400 bg-opacity-20 shadow-lg`;
+      }
+      return `${baseClass} border-white bg-white bg-opacity-10`;
+    };
+
     return (
-      <div className="text-xs md:text-sm">
-        <div className="font-bold text-yellow-400 mb-2">Bracket del Torneo</div>
-        <div className="flex gap-2 justify-between">
-          <div>
-            <div className="font-semibold mb-1">Octavos</div>
-            {bracket.round16.slice(0, 8).map((item, i) => (
-              <div key={i} className={`py-1 ${progress > i / 2 ? 'opacity-50' : ''}`}>
-                {item.name.substring(0, 15)}
-              </div>
-            ))}
+      <div className="text-[10px] md:text-xs overflow-x-auto pb-2">
+        <div className="font-bold text-yellow-400 mb-2 text-center text-sm md:text-base">Bracket del Torneo</div>
+        <div className="flex gap-2 md:gap-4 min-w-max justify-start">
+          {/* Octavos de Final - 16 jugadores en 8 duelos */}
+          <div className="flex flex-col">
+            <div className="font-bold mb-1.5 text-yellow-400 text-center text-xs md:text-sm">Octavos</div>
+            <div className="space-y-1.5">
+              {Array.from({ length: 8 }).map((_, i) => {
+                const idx1 = i * 2;
+                const idx2 = i * 2 + 1;
+                const player1 = bracket.round16[idx1];
+                const player2 = bracket.round16[idx2];
+                const winner = bracket.round8[i];
+                const isCurrent = isCurrentMatch('round16', i);
+
+                return (
+                  <div key={i} className={getMatchBoxClass(isCurrent)}>
+                    <div className="flex items-center gap-1">
+                      <div className={`flex-1 py-0.5 px-1 rounded text-[10px] md:text-xs leading-tight ${winner?.name === player1?.name ? 'bg-green-600 bg-opacity-30 font-bold' : ''}`}>
+                        {player1?.name.substring(0, 10) || '???'}
+                      </div>
+                      <div className="text-yellow-400 font-bold text-[8px] md:text-xs">vs</div>
+                      <div className={`flex-1 py-0.5 px-1 rounded text-[10px] md:text-xs leading-tight ${winner?.name === player2?.name ? 'bg-green-600 bg-opacity-30 font-bold' : ''}`}>
+                        {player2?.name.substring(0, 10) || '???'}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div>
-            <div className="font-semibold mb-1">Cuartos</div>
-            {bracket.round8.map((item, i) => (
-              <div key={i} className="py-2">
-                {item.name.substring(0, 15)}
-              </div>
-            ))}
+
+          {/* Cuartos de Final */}
+          <div className="flex flex-col justify-around">
+            <div className="font-bold mb-1.5 text-yellow-400 text-center text-xs md:text-sm">Cuartos</div>
+            <div className="space-y-6 md:space-y-8">
+              {Array.from({ length: 4 }).map((_, i) => {
+                const idx1 = i * 2;
+                const idx2 = i * 2 + 1;
+                const player1 = bracket.round8[idx1];
+                const player2 = bracket.round8[idx2];
+                const winner = bracket.round4[i];
+                const isCurrent = isCurrentMatch('round8', i);
+
+                if (!player1 || !player2) return <div key={i} className="h-12 md:h-16 border border-dashed border-white border-opacity-20 rounded"></div>;
+
+                return (
+                  <div key={i} className={getMatchBoxClass(isCurrent)}>
+                    <div className="flex items-center gap-1">
+                      <div className={`flex-1 py-0.5 px-1 rounded text-[10px] md:text-xs leading-tight ${winner?.name === player1.name ? 'bg-green-600 bg-opacity-30 font-bold' : ''}`}>
+                        {player1.name.substring(0, 10)}
+                      </div>
+                      <div className="text-yellow-400 font-bold text-[8px] md:text-xs">vs</div>
+                      <div className={`flex-1 py-0.5 px-1 rounded text-[10px] md:text-xs leading-tight ${winner?.name === player2.name ? 'bg-green-600 bg-opacity-30 font-bold' : ''}`}>
+                        {player2.name.substring(0, 10)}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div>
-            <div className="font-semibold mb-1">Semis</div>
-            {bracket.round4.map((item, i) => (
-              <div key={i} className="py-4">
-                {item.name.substring(0, 15)}
-              </div>
-            ))}
+
+          {/* Semifinales */}
+          <div className="flex flex-col justify-around">
+            <div className="font-bold mb-1.5 text-yellow-400 text-center text-xs md:text-sm">Semis</div>
+            <div className="space-y-12 md:space-y-16">
+              {Array.from({ length: 2 }).map((_, i) => {
+                const idx1 = i * 2;
+                const idx2 = i * 2 + 1;
+                const player1 = bracket.round4[idx1];
+                const player2 = bracket.round4[idx2];
+                const winner = bracket.round2[i];
+                const isCurrent = isCurrentMatch('round4', i);
+
+                if (!player1 || !player2) return <div key={i} className="h-12 md:h-16 border border-dashed border-white border-opacity-20 rounded"></div>;
+
+                return (
+                  <div key={i} className={getMatchBoxClass(isCurrent)}>
+                    <div className="flex items-center gap-1">
+                      <div className={`flex-1 py-0.5 px-1 rounded text-[10px] md:text-xs leading-tight ${winner?.name === player1.name ? 'bg-green-600 bg-opacity-30 font-bold' : ''}`}>
+                        {player1.name.substring(0, 10)}
+                      </div>
+                      <div className="text-yellow-400 font-bold text-[8px] md:text-xs">vs</div>
+                      <div className={`flex-1 py-0.5 px-1 rounded text-[10px] md:text-xs leading-tight ${winner?.name === player2.name ? 'bg-green-600 bg-opacity-30 font-bold' : ''}`}>
+                        {player2.name.substring(0, 10)}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div>
-            <div className="font-semibold mb-1">Final</div>
-            {bracket.round2.map((item, i) => (
-              <div key={i} className="py-8">
-                {item.name.substring(0, 15)}
+
+          {/* Final */}
+          <div className="flex flex-col justify-center">
+            <div className="font-bold mb-1.5 text-yellow-400 text-center text-xs md:text-sm">Final</div>
+            {bracket.round2[0] && bracket.round2[1] ? (
+              <div className={getMatchBoxClass(isCurrentMatch('round2', 0))}>
+                <div className="flex items-center gap-1">
+                  <div className={`flex-1 py-0.5 px-1 rounded text-[10px] md:text-xs leading-tight ${bracket.final === bracket.round2[0].name ? 'bg-green-600 bg-opacity-30 font-bold' : ''}`}>
+                    {bracket.round2[0].name.substring(0, 10)}
+                  </div>
+                  <div className="text-yellow-400 font-bold text-[8px] md:text-xs">vs</div>
+                  <div className={`flex-1 py-0.5 px-1 rounded text-[10px] md:text-xs leading-tight ${bracket.final === bracket.round2[1].name ? 'bg-green-600 bg-opacity-30 font-bold' : ''}`}>
+                    {bracket.round2[1].name.substring(0, 10)}
+                  </div>
+                </div>
               </div>
-            ))}
+            ) : (
+              <div className="h-12 md:h-16 border border-dashed border-white border-opacity-20 rounded flex items-center justify-center text-white text-opacity-50 text-xs">
+                -
+              </div>
+            )}
           </div>
-          <div>
-            <div className="font-semibold mb-1">Campeón</div>
-            {bracket.final && (
-              <div className="py-16 text-yellow-400 font-bold">
-                {bracket.final.substring(0, 15)}
+
+          {/* Campeón */}
+          <div className="flex flex-col justify-center">
+            <div className="font-bold mb-1.5 text-yellow-400 text-center text-xs md:text-sm">🏆</div>
+            {bracket.final ? (
+              <div className="border-2 border-yellow-400 bg-yellow-400 bg-opacity-30 p-2 md:p-3 rounded text-center shadow-xl">
+                <div className="text-lg md:text-2xl mb-1">🏆</div>
+                <div className="text-[10px] md:text-xs font-bold text-yellow-400 leading-tight">{bracket.final.substring(0, 10)}</div>
+              </div>
+            ) : (
+              <div className="h-12 md:h-16 border border-dashed border-yellow-400 border-opacity-30 rounded flex items-center justify-center">
+                <div className="text-yellow-400 text-opacity-50 text-lg">?</div>
               </div>
             )}
           </div>
