@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Share2, Copy, ChevronLeft, Trophy, Clock } from 'lucide-react';
+import { Share2, Copy, ChevronLeft, Trophy, Clock, Swords, Brackets } from 'lucide-react';
 import { THEMES_DATA } from './data.js';
 
 const VersusGame = () => {
@@ -337,18 +337,28 @@ const VersusGame = () => {
               <div className="grid gap-4">
                 <button
                   onClick={() => selectMode('1v1')}
-                  className="bg-purple-800 hover:bg-purple-700 p-6 rounded-lg transition-colors"
+                  className="bg-purple-800 hover:bg-purple-700 p-6 rounded-lg transition-colors flex items-start gap-4"
                 >
-                  <div className="text-2xl font-semibold mb-2">Versus 1 a 1</div>
-                  <div className="text-sm opacity-80">10 rondas de enfrentamientos directos</div>
+                  <Swords size={36} className="text-yellow-400 flex-shrink-0"/>
+
+                  <div>
+                    <div className="text-2xl font-semibold mb-2">Versus 1 a 1</div>
+                    <div className="text-sm opacity-80">10 rondas de enfrentamientos consecutivos</div>
+                  </div>
                 </button>
+
                 <button
                   onClick={() => selectMode('pyramid')}
-                  className="bg-purple-800 hover:bg-purple-700 p-6 rounded-lg transition-colors"
+                  className="bg-purple-800 hover:bg-purple-700 p-6 rounded-lg transition-colors flex items-start gap-4"
                 >
-                  <div className="text-2xl font-semibold mb-2">Single-Elimination</div>
-                  <div className="text-sm opacity-80">Torneo piramidal con 16 opciones</div>
+                  <Brackets size={36} className="text-yellow-400 flex-shrink-0"/>
+
+                  <div>
+                    <div className="text-2xl font-semibold mb-2">Single-Elimination</div>
+                    <div className="text-sm opacity-80">Torneo estilo mundial con 16 opciones</div>
+                  </div>
                 </button>
+
               </div>
             </div>
           )}

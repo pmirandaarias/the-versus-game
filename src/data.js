@@ -162,5 +162,58 @@ export const THEMES_DATA = {
       'Aperol Spritz', 'Vodka tónica', 'Gin Tonic', 'Grapa', 'Chuflai', 'Chupilca del diaulo',
       'Chicha de manzana', 'Sangría'
     ]
-  }
+  },
+
+  food: {
+    name: 'Comidas Típicas',
+    singular: 'comida',
+    gender: 'a',
+    items: [
+      'Pizza', 'Sushi', 'Tacos', 'Hamburguesa',
+      'Paella', 'Pad Thai', 'Ramen', 'Curry Indio',
+      'Asado de vacuno', 'Ceviche', 'Empanada de Pino', 'Croissant Dulce',
+      'Falafel', 'Kebab', 'Lasaña', 'Risotto', 'Gyoza',
+      'Porotos con rienda', 'Asado de cordeno', 'Biryani', 'Shawarma', 'Completos',
+      'Pastel de Choclo', 'Empanada Frita de Queso', 'Empanada Frita de Mariscos', 'Pescado Frito', 'Cazuela de Ave',
+      'Cazuela de Vacuno', 'Fideos con Salsa de Tomate', 'Bistec con Arroz', 'Bistec con Papas Fritas', 'Pollo Arvejado',
+      'Puré con Vienesas', 'Bistec a lo Pobre', 'Barros Jarpa', 'Choripán', 'Sopaipillas',
+      'Sashimi', 'Tempura', 'Aji de gallina', 'Pan con Manjar', 'Pan con Palta',
+      'Gnoccis', 'Ravioles', 'Pan con mortadela', 'Lasaña', 'Churros'
+    ]
+  },
+  series: {
+    name: 'Series de TV',
+    singular: 'serie',
+    gender: 'a',
+    items: [
+      'Breaking Bad', 'Game of Thrones', 'The Sopranos', 'The Wire', 'Friends',
+      'The Office', 'Stranger Things', 'The Crown', 'Sherlock', 'Black Mirror',
+      'Westworld', 'True Detective', 'Mad Men', 'Lost', 'The Walking Dead',
+      'Dexter', 'House of Cards', 'Narcos', 'Peaky Blinders', 'Money Heist',
+      'Dark', 'Chernobyl', 'Band of Brothers', 'The Mandalorian', 'The Witcher',
+      'Vikings', 'Better Call Saul', 'Fargo', 'Twin Peaks', 'The X-Files',
+      'Seinfeld', 'Curb Your Enthusiasm', 'Parks and Recreation', 'Brooklyn Nine-Nine', 'Community',
+      'Rick and Morty', 'BoJack Horseman', 'Arcane', 'The Last of Us', 'Succession',
+      'The Boys', 'Invincible', 'Fleabag', 'The Handmaid\'s Tale', 'Ozark',
+      'Mindhunter', 'Squid Game', 'Wednesday', 'The Bear', 'Severance'
+    ]
+  },
+
+  movies: {
+    name: 'Películas',
+    singular: 'película',
+    gender: 'a',
+    items: [
+      'The Godfather', 'The Shawshank Redemption', 'Pulp Fiction', 'The Dark Knight', 'Schindler\'s List',
+      'Forrest Gump', 'Fight Club', 'Inception', 'The Matrix', 'Goodfellas',
+      'Star Wars', 'The Lord of the Rings', 'Interstellar', 'The Silence of the Lambs', 'Saving Private Ryan',
+      'Se7en', 'The Departed', 'Gladiator', 'The Prestige', 'The Green Mile',
+      'Memento', 'Apocalypse Now', 'The Usual Suspects', 'American History X', 'Léon: The Professional',
+      'The Pianist', 'Parasite', 'Whiplash', 'The Shining', 'Alien',
+      'Blade Runner', 'Terminator 2', 'Jurassic Park', 'Back to the Future', 'Die Hard',
+      'Mad Max: Fury Road', 'No Country for Old Men', 'There Will Be Blood', 'Drive', 'The Grand Budapest Hotel',
+      'Her', 'La La Land', 'Jojo Rabbit', 'Knives Out', 'Everything Everywhere All at Once',
+      'Oppenheimer', 'Dune', 'The Batman', '1917', 'Joker'
+    ]
+  },
 };
