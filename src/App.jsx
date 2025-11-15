@@ -1,77 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Share2, Copy, ChevronLeft, Trophy, Clock } from 'lucide-react';
-
-// Datos de temas (50 opciones cada uno)
-const THEMES_DATA = {
-  nba: {
-    name: 'Jugadores de NBA',
-    singular: 'jugador de NBA',
-    gender: 'o',
-    items: [
-      'Michael Jordan', 'LeBron James', 'Kobe Bryant', 'Magic Johnson', 'Larry Bird',
-      'Kareem Abdul-Jabbar', 'Tim Duncan', 'Shaquille O\'Neal', 'Wilt Chamberlain', 'Bill Russell',
-      'Stephen Curry', 'Kevin Durant', 'Hakeem Olajuwon', 'Oscar Robertson', 'Jerry West',
-      'Julius Erving', 'Moses Malone', 'Dirk Nowitzki', 'Karl Malone', 'Charles Barkley',
-      'John Stockton', 'Scottie Pippen', 'Dwyane Wade', 'Kevin Garnett', 'Allen Iverson',
-      'Steve Nash', 'Jason Kidd', 'Chris Paul', 'Clyde Drexler', 'David Robinson',
-      'Patrick Ewing', 'Isiah Thomas', 'Ray Allen', 'Reggie Miller', 'Paul Pierce',
-      'Kawhi Leonard', 'Giannis Antetokounmpo', 'Nikola Jokic', 'Luka Doncic', 'Damian Lillard',
-      'James Harden', 'Russell Westbrook', 'Anthony Davis', 'Carmelo Anthony', 'Pau Gasol',
-      'Tony Parker', 'Manu Ginobili', 'Vince Carter', 'Tracy McGrady', 'Yao Ming'
-    ]
-  },
-  soccer: {
-    name: 'Jugadores de Fútbol',
-    singular: 'jugador de fútbol',
-    gender: 'o',
-    items: [
-      'Lionel Messi', 'Cristiano Ronaldo', 'Pelé', 'Diego Maradona', 'Johan Cruyff',
-      'Zinedine Zidane', 'Ronaldo Nazário', 'Ronaldinho', 'Franz Beckenbauer', 'Alfredo Di Stéfano',
-      'Michel Platini', 'Marco van Basten', 'George Best', 'Bobby Charlton', 'Lev Yashin',
-      'Gerd Müller', 'Paolo Maldini', 'Franco Baresi', 'Lothar Matthäus', 'Roberto Baggio',
-      'Romário', 'Rivaldo', 'Thierry Henry', 'Andrés Iniesta', 'Xavi Hernández',
-      'Neymar Jr', 'Kylian Mbappé', 'Erling Haaland', 'Robert Lewandowski', 'Karim Benzema',
-      'Luka Modrić', 'Kevin De Bruyne', 'Mohamed Salah', 'Sergio Ramos', 'Virgil van Dijk',
-      'Manuel Neuer', 'Gianluigi Buffon', 'Iker Casillas', 'Luis Suárez', 'Sergio Agüero',
-      'Zlatan Ibrahimović', 'Wayne Rooney', 'Frank Lampard', 'Steven Gerrard', 'Andrea Pirlo',
-      'Gareth Bale', 'Eden Hazard', 'Sadio Mané', 'Harry Kane', 'Son Heung-min'
-    ]
-  },
-  food: {
-    name: 'Comidas Típicas',
-    singular: 'comida',
-    gender: 'a',
-    items: [
-      'Pizza', 'Sushi', 'Tacos', 'Hamburguesa',
-      'Paella', 'Pad Thai', 'Ramen', 'Curry Indio',
-      'Asado de vacuno', 'Ceviche', 'Empanada de Pino', 'Croissant Dulce',
-      'Falafel', 'Kebab', 'Lasaña', 'Risotto', 'Gyoza',
-      'Porotos con rienda', 'Asado de cordeno', 'Biryani', 'Shawarma', 'Completos',
-      'Pastel de Choclo', 'Empanada Frita de Queso', 'Empanada Frita de Mariscos', 'Pescado Frito', 'Cazuela de Ave',
-      'Cazuela de Vacuno', 'Fideos con Salsa de Tomate', 'Bistec con Arroz', 'Bistec con Papas Fritas', 'Pollo Arvejado',
-      'Puré con Vienesas', 'Bistec a lo Pobre', 'Barros Jarpa', 'Choripán', 'Sopaipillas',
-      'Sashimi', 'Tempura', 'Aji de gallina', 'Pan con Manjar', 'Pan con Palta',
-      'Gnoccis', 'Ravioles', 'Pan con mortadela', 'Lasaña', 'Churros'
-    ]
-  },
-  series: {
-    name: 'Series de TV',
-    singular: 'serie',
-    gender: 'a',
-    items: [
-      'Breaking Bad', 'Game of Thrones', 'The Sopranos', 'The Wire', 'Friends',
-      'The Office', 'Stranger Things', 'The Crown', 'Sherlock', 'Black Mirror',
-      'Westworld', 'True Detective', 'Mad Men', 'Lost', 'The Walking Dead',
-      'Dexter', 'House of Cards', 'Narcos', 'Peaky Blinders', 'Money Heist',
-      'Dark', 'Chernobyl', 'Band of Brothers', 'The Mandalorian', 'The Witcher',
-      'Vikings', 'Better Call Saul', 'Fargo', 'Twin Peaks', 'The X-Files',
-      'Seinfeld', 'Curb Your Enthusiasm', 'Parks and Recreation', 'Brooklyn Nine-Nine', 'Community',
-      'Rick and Morty', 'BoJack Horseman', 'Arcane', 'The Last of Us', 'Succession',
-      'The Boys', 'Invincible', 'Fleabag', 'The Handmaid\'s Tale', 'Ozark',
-      'Mindhunter', 'Squid Game', 'Wednesday', 'The Bear', 'Severance'
-    ]
-  }
-};
+import { THEMES_DATA } from './data.js';
 
 const VersusGame = () => {
   const [screen, setScreen] = useState('home'); // home, setup, game, result
@@ -348,14 +277,8 @@ const VersusGame = () => {
 
           <div className="bg-purple-800 rounded-lg p-6 mb-8 text-lg leading-relaxed">
             <h2 className="text-2xl font-bold mb-4 text-yellow-400">¿Cómo jugar?</h2>
-            <p className="mb-4">
-              <strong>The Versus Game</strong> es un juego donde debes elegir entre dos opciones en cada ronda hasta determinar tu favorito absoluto.
-            </p>
-            <p className="mb-4">
-              <strong>Pasos:</strong>
-            </p>
             <ol className="list-decimal list-inside space-y-2 mb-4">
-              <li>Elige un <strong>tema</strong> (NBA, Fútbol, Comidas, Series)</li>
+              <li>Elige un <strong>tema</strong> (Fútbol, Comidas, Series, etc.)</li>
               <li>Selecciona una <strong>modalidad</strong>:
                 <ul className="list-disc list-inside ml-6 mt-2">
                   <li><strong>Versus 1 a 1:</strong> 10 rondas de enfrentamientos consecutivos</li>
@@ -365,9 +288,6 @@ const VersusGame = () => {
               <li>Decide si quieres <strong>tiempo límite</strong> (NO, 5 seg, 10 seg)</li>
               <li>¡Comienza a elegir y descubre tu favorito!</li>
             </ol>
-            <p className="text-sm text-yellow-300">
-              Tip: Puedes compartir tu resultado con amigos al finalizar.
-            </p>
           </div>
 
           <button
